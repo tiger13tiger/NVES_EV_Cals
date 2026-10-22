@@ -1,0 +1,15 @@
+supplier,model_name,performance_year,adr_category,body_on_frame,braked_tow_rating_kg,miro_kg,co2_g_km,units_sold
+Dragonfly Motors,Dragonfly Comet,2025,MA,False,0.0,1650.0,0.0,3423
+Dragonfly Motors,Dragonfly Nova,2025,MA,False,0.0,1800.0,0.0,1601
+Dragonfly Motors,Dragonfly Horizon,2025,MC,False,0.0,2100.0,0.0,1243
+Ironclad Trucks,Ironclad Ridge 4x4,2025,NA,False,0.0,2250.0,240.0,3619
+Ironclad Trucks,Ironclad Summit,2025,MC,True,3500.0,2600.0,260.0,2013
+Ironclad Trucks,Ironclad Hauler Van,2025,NB1,False,0.0,2100.0,225.0,1633
+Starling Auto,Starling Breeze,2025,MA,False,0.0,1300.0,135.0,4306
+Starling Auto,Starling Breeze Hybrid,2025,MA,False,0.0,1400.0,95.0,1746
+Starling Auto,Starling Trail,2025,MC,False,0.0,1900.0,150.0,1826
+Sapphire Motors,Sapphire GT,2025,MA,False,0.0,1850.0,185.0,994
+Sapphire Motors,Sapphire Odyssey,2025,MB,False,0.0,2000.0,200.0,687
+Lotus Leaf EV,Leaf Pico,2025,MA,False,0.0,1200.0,0.0,451
+Granite Commercial,Granite Workhorse,2025,NA,False,0.0,2200.0,220.0,1984
+Granite Commercial,Granite CityVan,2025,NB1,False,0.0,1900.0,195.0,1444

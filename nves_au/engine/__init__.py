@@ -13,6 +13,13 @@ from nves_au.engine.models import (
     VehicleRecord,
     VehicleResult,
 )
+from nves_au.engine.scenario import (
+    ScenarioAdjustment,
+    ScenarioComparison,
+    apply_scenario,
+    load_scenario,
+    run_scenario,
+)
 from nves_au.engine.targets import classify_and_score, score_fleet
 
 __all__ = [
@@ -28,4 +35,9 @@ __all__ = [
     "PenaltyExposure",
     "PeriodOutcome",
     "run_ledger",
+    "ScenarioAdjustment",
+    "ScenarioComparison",
+    "apply_scenario",
+    "load_scenario",
+    "run_scenario",
 ]

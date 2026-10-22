@@ -1,0 +1,10 @@
+name: "Shift 1,000 units from Ironclad Ridge 4x4 to Dragonfly Comet"
+adjustments:
+  - supplier: Ironclad Trucks
+    model_name: Ironclad Ridge 4x4
+    performance_year: 2025
+    delta_units: -1000
+  - supplier: Dragonfly Motors
+    model_name: Dragonfly Comet
+    performance_year: 2025
+    delta_units: 1000
