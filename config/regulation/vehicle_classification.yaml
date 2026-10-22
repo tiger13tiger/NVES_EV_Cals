@@ -1,0 +1,58 @@
+# Type 1 / Type 2 classification.
+#
+# NVES only covers vehicles up to 4.5 tonnes Gross Vehicle Mass (GVM); one
+# secondary source separately described a 3.5t GVM cutoff, which conflicts
+# with the Regulator's own "up to 4.5t GVM" statement — flagged below,
+# treat 4.5t as the applicable figure pending direct confirmation.
+#
+# Type 1 (passenger): Australian Design Rule vehicle categories MA
+#   (passenger car), MB (forward-control passenger vehicle), MC (light
+#   off-road passenger vehicle e.g. most 4x4 wagons/SUVs).
+# Type 2 (light commercial): categories NA and NB1 (vans, utes, light
+#   trucks), PLUS an MC vehicle that is reclassified into Type 2 if it is
+#   body-on-frame construction AND has a braked towing capacity of
+#   3,000 kg or more (the "heavy-duty 4x4 wagon" carve-out, e.g. LandCruiser
+#   / Patrol-class vehicles).
+#
+# This file only encodes the classification RULE, not a vehicle-by-vehicle
+# lookup table — the synthetic data generator and CSV loader are expected to
+# supply ADR category, body-on-frame flag and braked tow rating per vehicle
+# (see nves_au/data loaders).
+
+meta:
+  retrieved: "2026-10-22"
+  confidence: unverified
+  sources:
+    - url: "https://www.nvesregulator.gov.au/complying-nves/your-obligations"
+      note: >
+        States Type 1 = MA/MB/MC passenger categories, Type 2 = NA/NB1 light
+        commercial, scope up to 4.5t GVM. Not fetched directly (network
+        blocked) — taken from search-tool summary.
+    - url: "https://www.nvesregulator.gov.au/sites/default/files/documents/2025-06/nves-regulator-workshop-2-12-june-2025-slides.pdf"
+      note: >
+        Regulator workshop slides (12 June 2025): worked example reclassifying
+        a body-on-frame 4WD SUV with >=3,000 kg braked tow rating from Type 1
+        (MC) to Type 2.
+    - url: "https://en.wikipedia.org/wiki/New_Vehicle_Efficiency_Standard_Act_2024"
+      note: "Secondary corroboration of the body-on-frame + tow-rating rule."
+  caveats: >
+    The Regulator's own page says the type is ultimately defined by the Act
+    plus a legislative instrument, not fully spelled out on the page itself
+    — so the tow-rating threshold and body-on-frame condition should be
+    checked against that instrument directly. A seat-count criterion was
+    looked for and not found in any source; this file does not encode one.
+    Low-volume / specialist-and-enthusiast exemptions exist but are not yet
+    confirmed in final (made) form and are OUT OF SCOPE for v1 — the engine
+    assumes every input vehicle is a regulated, non-exempt covered vehicle.
+
+scope:
+  max_gvm_kg: 4500   # vehicles above this GVM are outside NVES entirely
+
+type_1_adr_categories: ["MA", "MB", "MC"]
+type_2_adr_categories: ["NA", "NB1"]
+
+# An MC vehicle is reclassified from Type 1 to Type 2 when BOTH hold:
+type_2_reclassification_rule:
+  applies_to_adr_category: "MC"
+  requires_body_on_frame: true
+  min_braked_tow_rating_kg: 3000

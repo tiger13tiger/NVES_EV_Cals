@@ -1,0 +1,71 @@
+# Per-vehicle mass adjustment applied on top of the headline target.
+#
+# Formula (NVES Act 2024 s.21, as restated in the Department of
+# Infrastructure's "NVES numerical precision and calculations guidance
+# note"):
+#
+#   ET = HL + MAF * (DM - RM)
+#
+#   ET  = vehicle emissions target (g/km)
+#   HL  = headline target for the vehicle's Type and year (headline_targets.yaml)
+#   MAF = mass adjustment factor for the vehicle's Type and year (below)
+#   DM  = "designated mass" = the vehicle's Mass In Running Order (MIRO, kg),
+#         clamped between mass_breakpoints.floor_kg and .cap_kg for its Type
+#   RM  = reference MIRO for the vehicle's Type and year (below)
+#
+# Only the 2025 values are confirmed against an official source (the
+# Department's guidance note, via search). The guidance note itself states
+# that parameters for 2026 onward may be changed by a future Ministerial
+# Determination — so MAF/RM for 2026-2029 are NOT assumed equal to 2025 and
+# are left unset/unverified here rather than guessed. The engine must raise
+# a clear error (not silently fall back) if asked to calculate a mass
+# adjustment for a year with no entry below.
+
+meta:
+  retrieved: "2026-10-22"
+  confidence: mixed   # 2025 = confirmed, 2026+ = unverified/not yet set
+  sources:
+    - url: "https://www.infrastructure.gov.au/sites/default/files/documents/nves-numerical-precision-and-calculations-guidance-note.pdf"
+      note: >
+        Department of Infrastructure guidance note: gives MAF and reference
+        MIRO for 2025 for both types, the ET formula citing NVES Act s.21,
+        and a worked example (Type 1, MIRO 1750 kg). Could not be fetched
+        directly in this session (network-blocked); figures taken from
+        search-tool summarisation of this document, so re-confirm by
+        opening the PDF directly before relying on them.
+    - url: "https://dieselnet.com/standards/au/ld_ghg.php"
+      note: >
+        Independently states the same mass-breakpoint structure (1,500 kg
+        floor both types; 2,200 kg cap Type 1 / 2,400 kg cap Type 2 for
+        2025-2029) and the linear mass-adjustment method, corroborating the
+        guidance note.
+  caveats: >
+    DieselNet also notes an earlier version of the breakpoints before a
+    government amendment raised the upper caps by 200 kg; the values below
+    are the post-amendment ones currently cited by both sources. 2026+
+    MAF/RM values are UNVERIFIED and intentionally absent — do not assume
+    they equal the 2025 values.
+
+mass_adjustment_factor:
+  type_1:
+    2025: 0.0663
+    # 2026-2029: not yet confirmed; subject to Ministerial Determination.
+  type_2:
+    2025: 0.0324
+
+reference_miro_kg:
+  type_1:
+    2025: 1723
+  type_2:
+    2025: 2155
+
+# Designated mass (DM) bounds: MIRO is clamped to [floor_kg, cap_kg] before
+# being used in the formula above. Stated as applying across 2025-2029 by
+# both sources, independent of the yearly MAF/RM.
+mass_breakpoints_kg:
+  type_1:
+    floor_kg: 1500
+    cap_kg: 2200
+  type_2:
+    floor_kg: 1500
+    cap_kg: 2400
