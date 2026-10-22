@@ -1,0 +1,6 @@
+# For Streamlit Community Cloud (and anyone who prefers requirements.txt
+# over `pip install -e ".[app]"`). This installs the nves_au package
+# itself (editable) plus its Streamlit app dependencies, all declared in
+# pyproject.toml -- this file is just a pointer at that single source of
+# truth, not a separate dependency list to keep in sync.
+-e .[app]
