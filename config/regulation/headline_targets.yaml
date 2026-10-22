@@ -1,0 +1,49 @@
+# Headline CO2 targets (HL) by vehicle Type and calendar year, in g/km.
+# These are the fleet-average targets BEFORE mass adjustment (see
+# mass_adjustment.yaml for the per-vehicle adjustment applied on top).
+#
+# NVES Act 2024 (Cth), s.18-21 sets out the headline targets and the
+# mass-adjustment method; the Department of Infrastructure's "NVES numerical
+# precision and calculations guidance note" restates them with worked
+# examples. This file was populated from secondary sources corroborating
+# each other (ICCT policy brief, DieselNet standards tracker) because direct
+# access to legislation.gov.au was blocked in this research session — see
+# config/regulation/README.md. Treat `confirmed` entries as "very likely
+# correct, pending a direct legislative-text check"; do not treat them as
+# verified against primary law.
+
+meta:
+  retrieved: "2026-10-22"
+  confidence: confirmed
+  sources:
+    - url: "https://theicct.org/wp-content/uploads/2024/06/ID-173-%E2%80%93-Australia-policy_final.pdf"
+      note: >
+        ICCT policy brief (June 2024), Table 1: headline g/km targets by
+        year and vehicle type.
+    - url: "https://dieselnet.com/standards/au/ld_ghg.php"
+      note: >
+        DieselNet Australia light-duty GHG standards page; independently
+        lists the same headline target table, used to corroborate ICCT.
+    - url: "https://www.bartier.com.au/insights/articles/australia-s-nves-2025-mandatory-co2-targets-for-motor-vehicle-suppliers"
+      note: "Law-firm summary, consistent with the above."
+  caveats: >
+    Not read from the Act's text directly in this pass (network access to
+    legislation.gov.au was blocked). Two independent secondary sources agree,
+    which is why this is marked `confirmed` rather than `unverified`, but a
+    human should still check the figures against the Act / Determination
+    before they're relied on for a real compliance decision.
+
+# g/km, test-cycle basis as legislated (NEDC-equivalent per the sources).
+headline_targets_g_per_km:
+  type_1:   # passenger vehicles (see vehicle_classification.yaml)
+    2025: 141
+    2026: 117
+    2027: 92
+    2028: 68
+    2029: 58
+  type_2:   # light commercial vehicles
+    2025: 210
+    2026: 180
+    2027: 150
+    2028: 122
+    2029: 110

@@ -1,0 +1,72 @@
+# Credit/debit accounting, banking, expiry and penalty parameters.
+#
+# Core per-vehicle/per-year accounting (NVES Regulator "Calculating IEVs and
+# issuing units" page, corroborated by a third-party fleet calculator and
+# BDO's 2025 interim-calculation explainer):
+#
+#   For each covered vehicle i in a supplier's fleet for a performance period:
+#     delta_i = E_i - ET_i        # E_i = measured g/km CO2, ET_i = vehicle target (see mass_adjustment.yaml)
+#   IEV (interim emissions value) = sum(delta_i) over all covered vehicles
+#     IEV < 0  -> supplier beat its target as a fleet -> issued NVES units (credits) equal to abs(IEV)
+#     IEV > 0  -> supplier missed its target -> in debit, owes abs(IEV) units
+#     IEV == 0 -> exactly compliant
+#
+#   FEV (final emissions value) = IEV - U
+#     U   = units extinguished (banked credits applied, or units acquired by transfer/purchase) against that period's IEV
+#     FEV is issued 2 years after the IEV for the same performance period --
+#     this is the window a supplier in debit has to acquire/apply units
+#     before the debit crystallises and becomes enforceable.
+#
+# One NVES "unit" = 1 gram/km of CO2 deviation for one vehicle for one
+# performance period (i.e. IEV/FEV are expressed directly in units, not a
+# separately-scaled currency) -- this equivalence is this project's own
+# inference from the IEV formula and worked examples (the Regulator's pages
+# summarised by search did not state the unit-to-gram ratio in so many
+# words). Flagged unverified; the engine treats "units" and "g/km x vehicle"
+# as interchangeable and this file's `caveats` block should be checked if
+# that ever looks wrong against an official worked example.
+
+meta:
+  retrieved: "2026-10-22"
+  confidence: mixed
+  sources:
+    - url: "https://www.nvesregulator.gov.au/complying-nves/calculating-ievs-and-issuing-units"
+      note: >
+        Regulator page defining IEV and FEV (FEV issued 2 years after IEV;
+        FEV = IEV - units extinguished). Not fetched directly (network
+        blocked) -- taken from search-tool summary of this page.
+    - url: "https://www.nvesregulator.gov.au/complying-nves/how-infringement-notices-and-penalties-are-applied"
+      note: >
+        Regulator page on penalties: infringement notice amount = FEV x $50
+        AUD, 28 days to pay; maximum civil penalty = FEV x $100 AUD.
+    - url: "https://www.bdo.com.au/en-au/insights/automotive/nves-2025-understanding-the-regulator-s-interim-emissions-calculations"
+      note: "Corroborates the IEV/liability framing and the $50/unit infringement figure with a worked example (FEV 2,000 units -> $100,000 notice)."
+    - url: "https://www.bartier.com.au/insights/articles/australia-s-nves-2025-mandatory-co2-targets-for-motor-vehicle-suppliers"
+      note: "States NVES units are valid for 3 years and expire 3 years after the date of issue if not used earlier."
+    - url: "https://theicct.org/wp-content/uploads/2024/06/ID-173-%E2%80%93-Australia-policy_final.pdf"
+      note: "States credits can be banked up to 3 years after their issuance year; debits must be cleared with credits within 2 years of the issuance year (pre-final-implementation policy brief)."
+  caveats: >
+    Not read from the Act/Rules text directly (network blocked in this
+    session). The $50 vs $100 distinction (infringement notice vs maximum
+    civil penalty a court could impose) is corroborated by two independent
+    sources and is marked `confirmed`; the 3-year unit expiry and the
+    gram-to-unit equivalence are each backed by only one or two secondary
+    sources and are marked `unverified`. A Wikipedia summary describes a
+    "$50, rising to $100 if unpaid" structure that reads slightly differently
+    from the Regulator's own "notice vs maximum penalty" framing used here --
+    the Regulator's own wording is preferred.
+
+accounting:
+  unit_equals_gram_km_per_vehicle: true   # see header note; unverified
+  fev_issued_years_after_iev: 2           # debit "grace"/offset window
+
+credit_banking:
+  confidence: unverified
+  expiry_years_from_issuance: 3
+  transferable: true   # units can be traded/transferred between regulated entities via the NVES Unit Registry
+
+penalties:
+  confidence: confirmed
+  infringement_notice_rate_aud_per_unit: 50
+  infringement_notice_payment_window_days: 28
+  max_civil_penalty_rate_aud_per_unit: 100
